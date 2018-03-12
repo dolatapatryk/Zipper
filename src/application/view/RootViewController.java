@@ -38,6 +38,7 @@ public class RootViewController {
     @FXML
     private void handleUnzip() {
     	mainApp.getRootLayout().setCenter(mainApp.getViews()[1]);
+    	
     }
     
     public void setMainApp(Main mainApp) {
