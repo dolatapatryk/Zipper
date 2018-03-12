@@ -1,5 +1,9 @@
 package application.view;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
 import application.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -44,13 +48,22 @@ public class ZipViewController {
     private void handleAddFilesButton() {
     	FileChooser fileChooser = new FileChooser();
     	fileChooser.setTitle("Choose files");
-    	fileChooser.showOpenDialog(mainApp.getPrimaryStage());
+    	//fileChooser.showOpenDialog(mainApp.getPrimaryStage());
+    	//fileChooser.showOpenMultipleDialog(mainApp.getPrimaryStage());
+    	List<File> files = fileChooser.showOpenMultipleDialog(mainApp.getPrimaryStage());
+    	for(File file : files) {
+    		try {
+				items.add(file.getCanonicalPath());
+			} catch (IOException e) {
+				System.out.println(e.getMessage());
+			}
+    	}
     }
     
     @FXML
     private void handleDeleteFilesButton() {
-    	
-
+    	int index = list.getSelectionModel().getSelectedIndex();
+    	items.remove(index);
     }
     
     @FXML
