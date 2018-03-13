@@ -1,12 +1,17 @@
 package application.view;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.zip.ZipInputStream;
 
 import application.Main;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
 public class UnzipViewController {
@@ -30,6 +35,7 @@ public class UnzipViewController {
 	    // Reference to the main application.
 	    private Main mainApp;
 	    private File file;
+	    private File directory;
 	    
 	    public UnzipViewController() {
 	    	
@@ -60,11 +66,33 @@ public class UnzipViewController {
 	    
 	    @FXML
 	    private void handleChooseFolderButton() {
-	    
+	    	DirectoryChooser directoryChooser = new DirectoryChooser();
+	    	directory = directoryChooser.showDialog(mainApp.getPrimaryStage());
+	    	if(directory!= null) {
+	    		try {
+					folderTextField.setText(directory.getCanonicalPath());
+				} catch (IOException e) {
+					System.out.println(e.getMessage());
+				}
+	    	}
 	    }
 	    
 	    @FXML
 	    private void handleUnzipButton() {
+	    	try {
+				ZipInputStream input = new ZipInputStream(new BufferedInputStream(new FileInputStream(folderTextField.getText())));
+				
+				
+				
+				
+				input.close();
+			} catch (IOException e) {
+				System.out.println(e.getMessage());
+			}
+	    	
+	    	
+	    	
+	    	
 	    	
 	    }
 	    
