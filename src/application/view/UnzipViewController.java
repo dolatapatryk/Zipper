@@ -1,10 +1,12 @@
 package application.view;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import application.Main;
@@ -36,6 +38,7 @@ public class UnzipViewController {
 	    private Main mainApp;
 	    private File file;
 	    private File directory;
+	    public static final int BUFFOR = 1024;
 	    
 	    public UnzipViewController() {
 	    	
@@ -79,18 +82,39 @@ public class UnzipViewController {
 	    
 	    @FXML
 	    private void handleUnzipButton() {
+	    	byte[] tmpData = new byte[BUFFOR];
+	    	File directory = new File(folderTextField.getText());
+	    	ZipEntry newEntry = null;
 	    	try {
-				ZipInputStream input = new ZipInputStream(new BufferedInputStream(new FileInputStream(folderTextField.getText())));
-				
-				
-				
-				
-				input.close();
+	    		if (!directory.exists())
+	                directory.mkdir();
+	    		
+	    		ZipInputStream input = new ZipInputStream(new BufferedInputStream(new FileInputStream(fileTextField.getText()),BUFFOR));
+	            
+	            
+	            while ((newEntry = input.getNextEntry())!= null)
+	            {
+	                BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(directory+File.separator+newEntry.getName()),BUFFOR);
+	                
+	                int counter;
+	                
+	                while ((counter = input.read(tmpData, 0, BUFFOR)) != -1)
+	                    output.write(tmpData, 0, counter);
+	                
+	                output.close();
+	                input.closeEntry();
+	            }
+	            
+	            input.close();
+
+
+	    		
 			} catch (IOException e) {
 				System.out.println(e.getMessage());
 			}
 	    	
-	    	
+	    	fileTextField.setText("");
+	    	folderTextField.setText("");
 	    	
 	    	
 	    	

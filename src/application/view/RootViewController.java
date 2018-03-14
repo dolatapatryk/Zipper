@@ -26,8 +26,7 @@ public class RootViewController {
   
     @FXML
     private void initialize() {
-        // Initialize the person table with the two columns.
-        
+
     }
     
     @FXML
